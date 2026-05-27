@@ -1,0 +1,1150 @@
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Accessibility,
+  BookOpen,
+  Bot,
+  ExternalLink,
+  FileText,
+  FolderOpen,
+  Gavel,
+  GraduationCap,
+  HandHelping,
+  HeartHandshake,
+  Home,
+  Menu,
+  PlayCircle,
+  Scale,
+  Search,
+  ShieldCheck,
+  Sparkles,
+  Users,
+  X,
+  Ear,
+  Eye,
+  Brain,
+} from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+
+export default function EDUINIntervencionWebApp() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [activeTopic, setActiveTopic] = useState<string | null>(null);
+  const [activeCard, setActiveCard] = useState<string | null>(null);
+  const [repoFilter, setRepoFilter] = useState<string>("Todos");
+  const [needFilter, setNeedFilter] = useState<string | null>(null);
+
+  const chatbotHref = "https://poe.com/EDUININTERVENCION";
+
+  
+  const SITE = {
+    title: "EDUIN Intervención Oportuna",
+    subtitle:
+      "Entorno digital de apoyo para la asignatura Intervención oportuna de niños y niñas con discapacidad.",
+    institution: "Instituto Superior Tecnológico Tsa´chila",
+    term: "II 2025",
+        chatbotName: "EDUININTERVENCION",
+    chatbotUrl: chatbotHref,
+    teacher: "Lic. Yordenis Ramos López, Ph.D. (c)",
+    coTeacher: "Lcda. Judith Mercedes Yánez Villafuerte, Ms.C.",
+    logoUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgCAYAAACLz2ctAAA/oklEQVR4nO2deXxV5Zn4v+97zrlbdpKQJY0QWkJCBQRUFjaoiAg4MqgVh11czcc6ttra6uD1fqv1OnO11s9HzlFfW7uWv+zycbzjHGc5x1nGOc5xFv7LwGf7JpP7vU6j0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Gs3D9Qbo4z8B9wL4EwC2A1gB4K8B7AJwL4DPAfgAgJcA2A7gPwF4AcCbANwG4C8B+AqA5wA8CeADAF4B8A4ArwL4OoA3AfgGgI8AeA2A1wG4DMCHAHwJwJ8A8DSAzwB4BsD3AfgpgHcA+ASADwL4DIDnAHwLwHsA/AjABQAfA/A7AB4D8CEAHwPwNQAvA/AbAB4F8DUAHwPwPQBfBPAqgE8AeBTA1wD8D8BfA3ADgO8B+CeANwB4EsDfA3gWwDcB2ADgfgA+C+BrAJ4G8C2AfgvgtwE4F8DjAF4E8C0A3wPwJQDfBvA4gD8A8A0A3wPwGQDfBvAqgI8D+DSAtwH4DIBPAPgMgGcBfA3AjwP4JYBvA3gMwD8B8CmAbwF4CMCvA/gSgC8AeBrAawA+CeBbAJ4E8B0AfwLwNoCvAXgYwI8C+CSAbwB4HMC3AfgIgH8C8G8Afg/AZwD8IMBzAO4D8PMAvgrgNQBvA3gUwL8C8A0A3wLwJYDvA3gUQJ3wKz6j0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDRq2u2lZc1aW1sL4D9bXl7eVwN4J8A2ANcB+DKAdwN4M4B7AHwJwKcArAHwBoBXAfgsgIcBfBPA7wF4C4C3AfgWgF8AcBPAawC+AuA7AN4H4G0AngHwK4C3AHgUwCcB3ArgGQAvA3gJwE8BfB3ASwC8BcD7ALwC4DkA3wPwQwA/CuB1AJ8D8ByATwP4GYBfBfAqgLcAeBzAawB+FMBvAXgTwP8A0AfwWQDfA/BzAG8A8CqAnwDwLIDfBvA2gIcA3AvgdQAfBvAkgG8B+AiA5wF8D8BzAH4HwGcBfA7A7wJ4B8B7ALwI4DkAPwTgNQBfBvA2gE8D+AiAbwH4L4CPAXgQwFsA3gHwJQAfA3gUgDcA+B6ATwP4NIA/A/AiAJ8H8D0AzwH4AIBXAXgZwJ8A+DyAdwH4DIBPAPgMgGcBfA3AjwP4JYBvA3gMwD8B8CmAbwF4CMCvA/gSgC8AeBrAawA+CeBbAJ4E8B0AfwLwNoCvAXgYwI8C+CSAbwB4HMC3AfgIgH8C8G8Afg/AZwD8IMBzAO4D8PMAvgrgNQBvA3gUwL8C8A0A3wLwJYDvA3gUQP3w3x2m1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wq1Wr0M9oQpJr5LhQAAAABJRU5ErkJggg=="
+  };
+
+  const sections = [
+    { id: "inicio", label: "Inicio", icon: Home },
+    { id: "modulos", label: "Módulos", icon: BookOpen },
+    { id: "discapacidades", label: "Discapacidades", icon: Accessibility },
+    { id: "videos", label: "Videos", icon: PlayCircle },
+    { id: "repositorio", label: "Repositorio", icon: FolderOpen },
+    { id: "normativa", label: "Normativa", icon: Scale },
+    { id: "organismos", label: "Organismos", icon: Gavel },
+    { id: "chatbot", label: "Chatbot", icon: Bot },
+  ];
+
+  const modules = [
+    {
+      title: "Fundamentos conceptuales, legales y enfoque de derechos",
+      description:
+        "Integra el modelo social de la discapacidad, el enfoque de derechos y el marco jurídico ecuatoriano para sustentar la intervención educativa inclusiva.",
+      icon: Gavel,
+      highlights: ["Modelo social", "Derechos", "LOEI", "Ley de Discapacidades"],
+    },
+    {
+      title: "Detección temprana e intervención oportuna",
+      description:
+        "Aborda signos de alerta, observación pedagógica, derivación y trabajo articulado entre familia, escuela y profesionales.",
+      icon: HeartHandshake,
+      highlights: ["Signos de alerta", "Observación", "Derivación", "Atención temprana"],
+    },
+    {
+      title: "Tipos de discapacidad y necesidades educativas",
+      description:
+        "Presenta apoyos y orientaciones para discapacidad intelectual, auditiva, visual, motora, TEA y síndrome de Down.",
+      icon: Users,
+      highlights: ["Intelectual", "Auditiva", "Visual", "Motora", "TEA", "Down"],
+    },
+    {
+      title: "Adaptaciones, accesibilidad y trabajo con familias",
+      description:
+        "Orienta la planificación de apoyos, ajustes razonables y estrategias de acompañamiento familiar desde un enfoque integral.",
+      icon: GraduationCap,
+      highlights: ["Adaptaciones", "Accesibilidad", "Familias", "Participación"],
+    },
+  ];
+
+  const disabilitySections = [
+    {
+      title: "Discapacidad intelectual",
+      icon: Brain,
+      color: "from-amber-500 to-orange-500",
+      summary: "Apoyos para funcionamiento adaptativo, autonomía y planificación pedagógica funcional.",
+    },
+    {
+      title: "Discapacidad auditiva y lengua de señas",
+      icon: Ear,
+      color: "from-emerald-500 to-teal-500",
+      summary: "Comunicación visual, LSEC y accesibilidad comunicacional en contextos educativos.",
+    },
+    {
+      title: "Discapacidad visual y braille",
+      icon: Eye,
+      color: "from-fuchsia-500 to-pink-500",
+      summary: "Baja visión, ceguera, braille, ábaco y acceso a la información.",
+    },
+    {
+      title: "Discapacidad motora",
+      icon: HandHelping,
+      color: "from-sky-500 to-blue-500",
+      summary: "Accesibilidad física, participación y autonomía funcional en el aula y el entorno.",
+    },
+    {
+      title: "TEA y neurodiversidad",
+      icon: Sparkles,
+      color: "from-violet-500 to-purple-500",
+      summary: "Apoyos visuales, comunicación, regulación y participación social.",
+    },
+    {
+      title: "Síndrome de Down",
+      icon: Users,
+      color: "from-rose-500 to-red-500",
+      summary: "Recursos para inclusión, desarrollo de habilidades y trabajo pedagógico contextualizado.",
+    },
+  ];
+
+  const videos = [
+    {
+      title: "Derechos de las personas con discapacidad",
+      organization: "UNICEF",
+      topic: "Derechos / inclusión",
+      url: "https://www.youtube.com/watch?v=otH8UDV6OWM",
+      thumbnail: "https://img.youtube.com/vi/otH8UDV6OWM/hqdefault.jpg",
+      note: "Introducción breve al enfoque de derechos desde una fuente institucional reconocida.",
+    },
+    {
+      title: "Campaña ¿Quién es quién?",
+      organization: "DOWN ESPAÑA",
+      topic: "Síndrome de Down / inclusión",
+      url: "https://www.youtube.com/watch?v=KALsZ6h-TjQ",
+      thumbnail: "https://img.youtube.com/vi/KALsZ6h-TjQ/hqdefault.jpg",
+      note: "Útil para analizar barreras actitudinales y estereotipos.",
+    },
+    {
+      title: "Lengua de señas ecuatoriana",
+      organization: "CONADIS – FENASEC",
+      topic: "Discapacidad auditiva / LSEC",
+      url: "https://www.youtube.com/watch?v=gUqFcrsoIIQ",
+      thumbnail: "https://img.youtube.com/vi/gUqFcrsoIIQ/hqdefault.jpg",
+      note: "Vincula la asignatura con el contexto ecuatoriano y la accesibilidad comunicacional.",
+    },
+    {
+      title: "Braitico",
+      organization: "ONCE",
+      topic: "Discapacidad visual / braille",
+      url: "https://www.youtube.com/watch?v=VP6a1SslV5k",
+      thumbnail: "https://img.youtube.com/vi/VP6a1SslV5k/hqdefault.jpg",
+      note: "Introduce recursos didácticos y alfabetización braille.",
+    },
+  ];
+
+  const repository = [
+    {
+      category: "Documentos base",
+      items: [
+        { name: "PEA de la asignatura", url: "https://drive.google.com/file/d/1Tgp8g3ZUYFkK4LEo58_V_B6mlhEw-OFD/view?usp=sharing" },
+        { name: "Guía didáctica", url: "#" },
+        { name: "Guías prácticas", url: "https://drive.google.com/drive/folders/1faX11EiVLerI6epjCjOYJKBTc68bD1Hi?usp=drive_link" },
+      ],
+    },
+    {
+      category: "Bibliografía de consulta",
+      items: [
+        { name: "Discapacidad intelectual", url: "https://drive.google.com/drive/folders/1JrCAnjpJ_AqqegGICxJ4uJwywbNQiBZ9?usp=sharing" },
+        { name: "Discapacidad auditiva", url: "https://drive.google.com/drive/folders/1OLn_inPPYEnAT82bklHuphwbAZi_WP7k?usp=sharing" },
+        { name: "Discapacidad visual", url: "https://drive.google.com/drive/folders/18jte_wxPodBG7Ukvr7TFfssl6RlLM-wL?usp=sharing" },
+        { name: "Discapacidad motora", url: "https://drive.google.com/drive/folders/1DL_5_y-WoYdYGPKJI4TDEe79plzXkQ4a?usp=sharing" },
+        { name: "Autismo / TEA", url: "https://drive.google.com/drive/folders/1e6HMWAKBfukFBeHouOss8DK5j-YDvDlg?usp=sharing" },
+        { name: "Síndrome de Down", url: "https://drive.google.com/drive/folders/1icuhx21wIh-p2vaiFvP7P3THeoaMAjPp?usp=sharing" },
+        { name: "Trastornos y otras NEE", url: "https://drive.google.com/drive/folders/1tqI-jPeCweQnnXsQddUeE1RDhK56GZP0?usp=drive_link" },
+      ],
+    },
+    {
+      category: "Guías técnico-pedagógicas",
+      items: [
+        { name: "Guía de derechos humanos", url: "https://drive.google.com/file/d/1O5SoSmeDSrBSlxg5vWoqlaD2WDmMZrqa/view?usp=sharing" },
+        { name: "Guía de salud sexual y discapacidad", url: "https://drive.google.com/file/d/1NeJVcLalPWXQGwO3L5319cVYNX-Oy-GV/view?usp=sharing" },
+        { name: "Manual de respuestas a las NEE", url: "https://drive.google.com/file/d/1ag6hIL_rrHD8YGSr3BcQ7p3O9q6qYDZC/view?usp=sharing" },
+        { name: "Manual de atención a discapacidad – Función Judicial", url: "https://drive.google.com/file/d/1xZ2qL5VEf1FYfrHs7b9BHyUxEROKvIVR/view?usp=sharing" },
+        { name: "Altas capacidades intelectuales", url: "https://drive.google.com/drive/folders/1dHtnBp_EzsdG9LmD-AbFoPjxIk3yv7Zd?usp=sharing" },
+        { name: "Comprensión lectora", url: "https://drive.google.com/drive/folders/1YBcrSdjmjaXjS3bbS_QjVe7yvgGnvnQK?usp=drive_link" },
+        { name: "Discalculia", url: "https://drive.google.com/drive/folders/1HmpDfcjqlOXiyTHQHFAv9g9SlnMtelFp?usp=drive_link" },
+        { name: "Discapacidades", url: "https://drive.google.com/drive/folders/1IwG1wnn9auyfY9qgRiyhbwGIkdYGs2dG?usp=drive_link" },
+        { name: "Disfemia", url: "https://drive.google.com/drive/folders/11cyVDjtKlv-x5snUpqMGb2MRT6Ksg1PR?usp=drive_link" },
+        { name: "Disgrafía", url: "https://drive.google.com/drive/folders/1_UBFJ_rY57cekmm0YGyvL_W6Kri4cVDb?usp=drive_link" },
+        { name: "Dislexia", url: "https://drive.google.com/drive/folders/1C2YPUoFYWtMSpU-Q4NaLljrz2iVVP2xj?usp=drive_link" },
+        { name: "Disortografía", url: "https://drive.google.com/drive/folders/1woti8q1uQKndxriqIo3haNdgB3ZZb0kW?usp=drive_link" },
+        { name: "TDAH", url: "https://drive.google.com/drive/folders/1SG1uZMN7Zoyhgq2ziIwiSsUF5bG7c2km?usp=drive_link" },
+        { name: "Otras actividades de apoyo", url: "https://drive.google.com/drive/folders/1StQnJdsj81TDrhMwaQZx7U6soqcGbrdb?usp=drive_link" },
+      ],
+    },
+  ];
+
+  const regulations = [
+    {
+      title: "Constitución de la República del Ecuador",
+      emphasis: "Reconoce la educación como derecho y prohíbe la discriminación.",
+      url: "https://drive.google.com/file/d/1gkYES_uKctKGZJELDCfRLLVZHGqaKlvq/view?usp=sharing",
+    },
+    {
+      title: "Ley Orgánica de Educación Intercultural (LOEI)",
+      emphasis: "Sostiene la inclusión educativa y la atención a necesidades educativas especiales.",
+      url: "https://drive.google.com/file/d/1OVAP6gPnGorlERQfYUzfyll92YueoIGs/view?usp=sharing",
+    },
+    {
+      title: "Ley Orgánica de Discapacidades",
+      emphasis: "Fortalece el enfoque de derechos y la accesibilidad.",
+      url: "https://drive.google.com/file/d/1u3QZUR35X-MT-Po2FgZXRnTFvfsGR6Mq/view?usp=sharing",
+    },
+    {
+      title: "Acuerdo MINEDUC-MINEDUC-2018-00055-A",
+      emphasis: "Regula procesos diferenciados de gestión y atención.",
+      url: "https://drive.google.com/file/d/1XntHzpcbxESZTY049ZYqX48W_yjYAXl9/view?usp=sharing",
+    },
+  ];
+
+  const agencies = [
+    {
+      name: "Ministerio de Educación del Ecuador",
+      description: "Normativa, lineamientos, acuerdos y recursos educativos oficiales.",
+      url: "https://educacion.gob.ec/",
+    },
+    {
+      name: "CONADIS",
+      description: "Normativa, guías, estadísticas y materiales técnicos sobre discapacidad.",
+      url: "https://www.consejodiscapacidades.gob.ec/",
+    },
+    {
+      name: "Ministerio de Salud Pública",
+      description: "Prevención, atención integral y articulación intersectorial.",
+      url: "https://www.salud.gob.ec/",
+    },
+    {
+      name: "UNICEF Ecuador",
+      description: "Infancia, inclusión, derechos y protección integral.",
+      url: "https://www.unicef.org/ecuador/",
+    },
+  ];
+
+  const cardDetails: Record<string, { title: string; summary: string; bullets: string[] }> = {
+    "Discapacidad intelectual": {
+      title: "Discapacidad intelectual",
+      summary:
+        "La discapacidad intelectual implica limitaciones significativas en el funcionamiento intelectual y en la conducta adaptativa, por lo que la respuesta educativa debe priorizar apoyos funcionales, comunicación clara y objetivos contextualizados.",
+      bullets: [
+        "Favorecer rutinas comprensibles, anticipación y secuencias concretas.",
+        "Trabajar habilidades adaptativas, autonomía y participación real.",
+        "Utilizar mediaciones pedagógicas claras, graduales y repetidas.",
+      ],
+    },
+    "Discapacidad auditiva y lengua de señas": {
+      title: "Discapacidad auditiva y lengua de señas",
+      summary:
+        "La accesibilidad comunicacional es central. El aula debe organizar apoyos visuales, lengua de señas cuando corresponda, contacto visual y adaptación del intercambio oral.",
+      bullets: [
+        "Priorizar apoyos visuales y ubicación estratégica del estudiante.",
+        "Reducir barreras en consignas, interacción y evaluación.",
+        "Valorar la LSEC como recurso de inclusión y comunicación.",
+      ],
+    },
+    "Discapacidad visual y braille": {
+      title: "Discapacidad visual y braille",
+      summary:
+        "La intervención educativa debe garantizar acceso a la información, orientación espacial, materiales accesibles y apoyos como braille, macrotipo o recursos tiflotécnicos según necesidad.",
+      bullets: [
+        "Adecuar materiales, contrastes, tamaño o sistema braille.",
+        "Favorecer autonomía en desplazamiento y uso del entorno.",
+        "Verificar que las consignas sean comprensibles y accesibles.",
+      ],
+    },
+    "Discapacidad motora": {
+      title: "Discapacidad motora",
+      summary:
+        "La respuesta educativa debe garantizar accesibilidad física, tiempos adecuados, apoyos para manipulación de materiales y participación efectiva en cada experiencia de aprendizaje.",
+      bullets: [
+        "Revisar mobiliario, desplazamiento y acceso a recursos.",
+        "Ajustar actividades sin reducir la participación del estudiante.",
+        "Coordinar apoyos técnicos o humanos cuando sea necesario.",
+      ],
+    },
+    "TEA y neurodiversidad": {
+      title: "TEA y neurodiversidad",
+      summary:
+        "La intervención en TEA requiere estructura, previsibilidad, mediación social y apoyos visuales, respetando la neurodiversidad y evitando interpretaciones estigmatizantes del comportamiento.",
+      bullets: [
+        "Usar apoyos visuales, rutinas y claves anticipatorias.",
+        "Favorecer regulación emocional y comprensión del entorno.",
+        "Diseñar participación social acompañada y comprensible.",
+      ],
+    },
+    "Síndrome de Down": {
+      title: "Síndrome de Down",
+      summary:
+        "La intervención debe fortalecer lenguaje, autonomía, interacción y aprendizaje funcional desde una perspectiva inclusiva, con altas expectativas realistas y apoyos pertinentes.",
+      bullets: [
+        "Trabajar desde fortalezas y ritmos individuales.",
+        "Usar andamiaje progresivo, lenguaje claro y práctica guiada.",
+        "Integrar a familia y aula en procesos consistentes de apoyo.",
+      ],
+    },
+  };
+
+  const topicDetails: Record<string, { title: string; summary: string; bullets: string[] }> = {
+    "Modelo social": {
+      title: "Modelo social de la discapacidad",
+      summary:
+        "Comprende la discapacidad no solo como una condición individual, sino como el resultado de la interacción entre la persona y las barreras del entorno físico, comunicacional, social y actitudinal.",
+      bullets: [
+        "Desplaza la mirada asistencialista o exclusivamente médica.",
+        "Enfatiza la eliminación de barreras para el aprendizaje y la participación.",
+        "Ubica a la accesibilidad y a los ajustes razonables como respuestas clave.",
+      ],
+    },
+    Derechos: {
+      title: "Enfoque de derechos",
+      summary:
+        "Sitúa a niñas, niños y personas con discapacidad como sujetos de derechos, con garantías de igualdad, dignidad, participación e inclusión en todos los espacios educativos y sociales.",
+      bullets: [
+        "Reconoce la no discriminación como principio rector.",
+        "Demanda acciones afirmativas y protección integral.",
+        "Orienta la intervención pedagógica con base en equidad y justicia educativa.",
+      ],
+    },
+    LOEI: {
+      title: "LOEI",
+      summary:
+        "La Ley Orgánica de Educación Intercultural sostiene la inclusión educativa, la atención a necesidades educativas especiales y la eliminación de barreras para el acceso, permanencia y aprendizaje.",
+      bullets: [
+        "Regula derechos, obligaciones y funcionamiento del sistema educativo.",
+        "Reconoce apoyos, adaptaciones y atención diferenciada.",
+        "Es una base normativa central para la educación inclusiva en Ecuador.",
+      ],
+    },
+    "Ley de Discapacidades": {
+      title: "Ley Orgánica de Discapacidades",
+      summary:
+        "Fortalece el enfoque de derechos, la accesibilidad, la acción afirmativa y la participación social de las personas con discapacidad en el contexto ecuatoriano.",
+      bullets: [
+        "Articula salud, educación, accesibilidad y protección social.",
+        "Orienta medidas para equiparación de oportunidades.",
+        "Es clave para comprender el marco de la intervención oportuna.",
+      ],
+    },
+    "Signos de alerta": {
+      title: "Signos de alerta en el desarrollo",
+      summary:
+        "Son manifestaciones que pueden indicar posibles dificultades en el desarrollo infantil y requieren observación, registro y, en algunos casos, derivación oportuna.",
+      bullets: [
+        "Pueden aparecer en lenguaje, motricidad, socialización o conducta.",
+        "No sustituyen el diagnóstico especializado.",
+        "Ayudan a activar acciones pedagógicas y familiares tempranas.",
+      ],
+    },
+    Observación: {
+      title: "Observación pedagógica",
+      summary:
+        "Es el proceso sistemático de mirar, registrar e interpretar comportamientos, respuestas y desempeños del niño o la niña en situaciones reales de aula y convivencia.",
+      bullets: [
+        "Permite identificar fortalezas, necesidades y barreras.",
+        "Debe apoyarse en registros claros y contextualizados.",
+        "Es una base para la toma de decisiones educativas pertinentes.",
+      ],
+    },
+    Derivación: {
+      title: "Derivación oportuna",
+      summary:
+        "Consiste en remitir el caso a profesionales o servicios especializados cuando la observación pedagógica sugiere la necesidad de una valoración más profunda.",
+      bullets: [
+        "Debe realizarse con criterios claros y evidencia básica de observación.",
+        "Involucra comunicación ética y respetuosa con la familia.",
+        "No reemplaza la intervención educativa inicial, sino que la complementa.",
+      ],
+    },
+    "Atención temprana": {
+      title: "Atención temprana",
+      summary:
+        "Conjunto de acciones dirigidas a niñas y niños en primera infancia para favorecer su desarrollo y responder oportunamente ante señales de riesgo o necesidades específicas.",
+      bullets: [
+        "Integra familia, escuela, salud y apoyos especializados.",
+        "Busca prevenir o disminuir barreras futuras en el desarrollo.",
+        "Se fundamenta en intervención oportuna, seguimiento y trabajo interdisciplinario.",
+      ],
+    },
+    Intelectual: {
+      title: "Discapacidad intelectual",
+      summary:
+        "Implica limitaciones significativas en el funcionamiento intelectual y en la conducta adaptativa, con efectos en la autonomía, la comunicación y el aprendizaje cotidiano.",
+      bullets: [
+        "Requiere apoyos pedagógicos funcionales y contextualizados.",
+        "Debe priorizarse el desarrollo de habilidades prácticas y sociales.",
+        "La intervención debe partir de fortalezas y necesidades reales del estudiante.",
+      ],
+    },
+    Auditiva: {
+      title: "Discapacidad auditiva",
+      summary:
+        "Comprende distintos grados de pérdida auditiva y exige respuestas de accesibilidad comunicacional, visual y pedagógica para garantizar participación y aprendizaje.",
+      bullets: [
+        "Puede requerir lengua de señas, apoyos visuales o recursos tecnológicos.",
+        "La organización del aula y la mediación docente son determinantes.",
+        "La accesibilidad comunicativa es central para la inclusión.",
+      ],
+    },
+    Visual: {
+      title: "Discapacidad visual",
+      summary:
+        "Incluye baja visión y ceguera, y demanda accesibilidad a la información, al espacio, al material didáctico y a sistemas como braille o apoyos tiflotécnicos.",
+      bullets: [
+        "El diseño del entorno y la anticipación espacial son fundamentales.",
+        "Los materiales deben presentarse en formatos accesibles.",
+        "La mediación docente debe favorecer autonomía y orientación.",
+      ],
+    },
+    Motora: {
+      title: "Discapacidad motora",
+      summary:
+        "Se relaciona con limitaciones en movilidad, postura o desplazamiento, y exige adecuaciones del entorno y de la participación en actividades educativas.",
+      bullets: [
+        "La accesibilidad física es condición básica.",
+        "Las actividades deben prever participación real y no simbólica.",
+        "Pueden requerirse ayudas técnicas o ajustes del mobiliario.",
+      ],
+    },
+    TEA: {
+      title: "TEA",
+      summary:
+        "El Trastorno del Espectro Autista implica diferencias en comunicación, interacción social, flexibilidad conductual y procesamiento sensorial, con necesidades de apoyo variadas.",
+      bullets: [
+        "Los apoyos visuales y las rutinas predecibles suelen ser útiles.",
+        "La intervención debe respetar la neurodiversidad y evitar estigmas.",
+        "La participación social requiere mediación y comprensión del contexto.",
+      ],
+    },
+    Down: {
+      title: "Síndrome de Down",
+      summary:
+        "Condición genética que puede asociarse a necesidades de apoyo en lenguaje, motricidad, autonomía y aprendizaje, siempre con gran variabilidad individual.",
+      bullets: [
+        "La expectativa educativa debe centrarse en posibilidades reales de desarrollo.",
+        "Son clave la inclusión, el lenguaje claro y el andamiaje progresivo.",
+        "El trabajo con familia y escuela fortalece los logros funcionales.",
+      ],
+    },
+    Adaptaciones: {
+      title: "Adaptaciones",
+      summary:
+        "Son modificaciones o ajustes en actividades, materiales, evaluación, tiempos o apoyos para responder a necesidades específicas sin excluir al estudiante del proceso educativo.",
+      bullets: [
+        "Pueden ser de acceso, de aprendizaje o de comunicación.",
+        "Deben responder al contexto y a la necesidad real observada.",
+        "Buscan participación, pertinencia y continuidad del aprendizaje.",
+      ],
+    },
+    Accesibilidad: {
+      title: "Accesibilidad",
+      summary:
+        "Condición del entorno, la información, la comunicación y los recursos para que todas las personas puedan acceder, comprender, participar y aprender en igualdad de oportunidades.",
+      bullets: [
+        "No se limita a rampas o infraestructura.",
+        "Incluye accesibilidad comunicacional, digital y pedagógica.",
+        "Es una base estructural de la inclusión educativa.",
+      ],
+    },
+    Familias: {
+      title: "Trabajo con familias",
+      summary:
+        "Implica colaboración, comunicación y corresponsabilidad entre la institución educativa y la familia para sostener procesos de apoyo, seguimiento e intervención oportuna.",
+      bullets: [
+        "Favorece coherencia entre hogar y escuela.",
+        "Aporta información relevante sobre el desarrollo del niño o niña.",
+        "Debe desarrollarse desde el respeto, la orientación y la escucha activa.",
+      ],
+    },
+    Participación: {
+      title: "Participación",
+      summary:
+        "Supone la inclusión activa del estudiante en experiencias de aprendizaje, interacciones, decisiones y dinámicas del entorno, evitando su exclusión o presencia meramente simbólica.",
+      bullets: [
+        "Es un indicador clave de inclusión auténtica.",
+        "Requiere ajustes para que el estudiante intervenga de manera real.",
+        "Debe observarse en aula, juego, comunicación y convivencia.",
+      ],
+    },
+  };
+
+  const resourceIndex = useMemo(() => {
+    const repositoryResources = repository.flatMap((group) =>
+      group.items
+        .filter((item) => item.url !== "#")
+        .map((item) => ({
+          title: item.name,
+          url: item.url,
+          group: group.category,
+          section: "Repositorio",
+          kind: item.url.includes("/folders/") ? "Carpeta" : "Documento",
+          keywords: [group.category, item.name],
+        }))
+    );
+
+    const regulationResources = regulations.map((law) => ({
+      title: law.title,
+      url: law.url,
+      group: "Normativa y enfoque de derechos",
+      section: "Normativa",
+      kind: "Documento",
+      keywords: [law.title, law.emphasis, "normativa", "derechos"],
+    }));
+
+    const agencyResources = agencies.map((agency) => ({
+      title: agency.name,
+      url: agency.url,
+      group: "Organismos",
+      section: "Organismos",
+      kind: "Portal",
+      keywords: [agency.name, agency.description, "organismos"],
+    }));
+
+    const videoResources = videos.map((video) => ({
+      title: video.title,
+      url: video.url,
+      group: "Videoteca curada",
+      section: "Videos",
+      kind: "Video",
+      keywords: [video.title, video.organization, video.topic, video.note],
+    }));
+
+    return [...repositoryResources, ...regulationResources, ...agencyResources, ...videoResources];
+  }, []);
+
+  const quickSearchTerms = [
+    "Detección temprana",
+    "Adaptaciones curriculares",
+    "Lengua de señas ecuatoriana",
+    "Braille",
+    "Enfoque de derechos",
+    "Trabajo con familias",
+    "LOEI",
+    "TEA",
+    "Dislexia",
+  ];
+
+  const needCards = [
+    {
+      title: "Voy a fundamentar un trabajo",
+      description: "Prioriza normativa, bibliografía de consulta y documentos base.",
+      searchTerm: "derechos humanos",
+      repoTarget: "Bibliografía de consulta",
+      anchor: "#repositorio",
+    },
+    {
+      title: "Tengo un caso o situación educativa",
+      description: "Enfoca la consulta en guías técnico-pedagógicas y apoyos por necesidad específica.",
+      searchTerm: "NEE",
+      repoTarget: "Guías técnico-pedagógicas",
+      anchor: "#repositorio",
+    },
+    {
+      title: "Necesito revisar una discapacidad específica",
+      description: "Dirige la búsqueda a carpetas temáticas y materiales especializados por condición.",
+      searchTerm: "discapacidad",
+      repoTarget: "Bibliografía de consulta",
+      anchor: "#discapacidades",
+    },
+    {
+      title: "Quiero contrastar normativa",
+      description: "Acceso rápido al marco legal y de derechos para sustentar decisiones pedagógicas.",
+      searchTerm: "LOEI",
+      repoTarget: null,
+      anchor: "#normativa",
+    },
+    {
+      title: "No entiendo un tema y quiero apoyo",
+      description: "Combina videoteca, buscador temático y chatbot para ampliar explicaciones.",
+      searchTerm: "TEA",
+      repoTarget: null,
+      anchor: "#chatbot",
+    },
+    {
+      title: "Quiero consultar organismos oficiales",
+      description: "Lleva a portales institucionales para ampliar información y normativa aplicada.",
+      searchTerm: "organismos",
+      repoTarget: null,
+      anchor: "#organismos",
+    },
+  ];
+
+  const totalMatches = useMemo(() => {
+    if (!search.trim()) return resourceIndex.length;
+    const q = search.toLowerCase();
+    return resourceIndex.filter((item) => [item.title, item.group, item.section, item.kind, ...item.keywords].join(" ").toLowerCase().includes(q)).length;
+  }, [search, resourceIndex]);
+
+  const filteredResults = useMemo(() => {
+    if (!search.trim()) return resourceIndex.slice(0, 6);
+    const q = search.toLowerCase();
+    return resourceIndex
+      .filter((item) => [item.title, item.group, item.section, item.kind, ...item.keywords].join(" ").toLowerCase().includes(q))
+      .sort((a, b) => {
+        const aExact = a.title.toLowerCase().includes(q) ? 1 : 0;
+        const bExact = b.title.toLowerCase().includes(q) ? 1 : 0;
+        return bExact - aExact;
+      })
+      .slice(0, 8);
+  }, [search, resourceIndex]);
+
+  const applyNeedRoute = (searchTerm: string, repoTarget: string | null) => {
+    setSearch(searchTerm);
+    if (repoTarget) setRepoFilter(repoTarget);
+    setNeedFilter(searchTerm);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+          <div className="flex items-center gap-3">
+            <img
+              src={SITE.logoUrl}
+              alt="Logo Educación Inicial"
+              className="h-14 w-14 rounded-2xl border border-slate-200 object-contain bg-white p-1 shadow-sm"
+            />
+            <div>
+              <p className="text-sm font-semibold text-slate-500">{SITE.institution}</p>
+              <h1 className="text-lg font-black leading-tight">{SITE.title}</h1>
+            </div>
+          </div>
+
+          <nav className="hidden items-center gap-2 lg:flex">
+            {sections.map((section) => (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                className="inline-flex items-center rounded-2xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+              >
+                <section.icon className="mr-2 h-4 w-4" />
+                {section.label}
+              </a>
+            ))}
+          </nav>
+
+          <Button variant="outline" className="rounded-2xl lg:hidden" onClick={() => setMobileMenuOpen((v) => !v)}>
+            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </Button>
+        </div>
+
+        {mobileMenuOpen && (
+          <div className="border-t border-slate-200 bg-white px-4 py-3 lg:hidden">
+            <div className="grid gap-2">
+              {sections.map((section) => (
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  className="inline-flex items-center rounded-2xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <section.icon className="mr-2 h-4 w-4" />
+                  {section.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </header>
+
+      <section id="inicio" className="relative overflow-hidden bg-gradient-to-br from-violet-50 via-white to-sky-50">
+        <div className="mx-auto max-w-7xl px-4 pt-6 lg:px-8">
+          <div className="mb-6 rounded-3xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-900">
+            <strong>Ruta de aprendizaje:</strong> Explora conceptos → Consulta bibliografía → Revisa guías técnico-pedagógicas → Contrasta normativa → Apóyate en el chatbot
+          </div>
+        </div>
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[1.15fr_.85fr] lg:px-8 lg:py-12">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
+            <Badge className="mb-4 rounded-full bg-violet-100 text-violet-800 hover:bg-violet-100">Plataforma didáctica interactiva</Badge>
+            <h2 className="max-w-4xl text-4xl font-black tracking-tight lg:text-6xl">Inclusión, intervención oportuna y accesibilidad en un solo entorno digital.</h2>
+            <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">{SITE.subtitle} Integra recursos académicos, normativa, materiales especializados, videoteca institucional y acceso directo al chatbot de apoyo.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href="#modulos"><Button className="rounded-2xl">Explorar contenidos</Button></a>
+              <a href="#videos"><Button variant="outline" className="rounded-2xl">Ver videoteca</Button></a>
+              <a href={SITE.chatbotUrl} target="_blank" rel="noopener noreferrer"><Button variant="secondary" className="rounded-2xl">Ir al chatbot<ExternalLink className="ml-2 h-4 w-4" /></Button></a>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.08 }}>
+            <Card className="rounded-[2rem] border-0 bg-slate-950 text-white shadow-2xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-2xl"><Search className="h-6 w-6 text-violet-300" />Explorador temático</CardTitle>
+                <CardDescription className="text-slate-300">Busca recursos reales del portal priorizados por relevancia.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Ej.: dislexia, LOEI, TEA..." className="rounded-2xl border-slate-700 bg-slate-900 text-white" />
+                <div className="text-sm text-slate-400">Resultados: <span className="font-bold text-white">{totalMatches}</span></div>
+                <div className="space-y-2">
+                  {filteredResults.map((item) => (
+                    <a key={item.title} href={item.url} target="_blank" rel="noopener noreferrer" className="block rounded-xl bg-slate-900 p-3 hover:bg-slate-800">
+                      <div className="flex items-center justify-between">
+                        <p className="font-semibold">{item.title}</p>
+                        <span className="text-[10px] bg-slate-700 px-2 py-1 rounded-full">{item.kind}</span>
+                      </div>
+                      <p className="text-xs text-slate-400">{item.group}</p>
+                      <p className="mt-1 text-[11px] text-slate-500">
+                        {item.kind === "Documento"
+                          ? "Útil para fundamentación"
+                          : item.kind === "Carpeta"
+                            ? "Colección de recursos"
+                            : item.kind === "Video"
+                              ? "Apoyo audiovisual"
+                              : "Consulta institucional"}
+                      </p>
+                    </a>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
+      <main className="mx-auto max-w-7xl space-y-16 px-4 py-12 lg:px-8 lg:py-16">
+        <section id="necesidades" className="scroll-mt-24">
+          <Badge className="mb-3 rounded-full bg-fuchsia-100 text-fuchsia-800 hover:bg-fuchsia-100">Orientación de uso</Badge>
+          <h3 className="text-3xl font-black tracking-tight">¿Qué necesitas hoy?</h3>
+          <p className="mt-2 max-w-4xl text-slate-600">Selecciona una intención de consulta para activar una ruta rápida de navegación dentro del portal sin perder los recursos ya integrados.</p>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {needCards.map((card) => (
+              <a
+                key={card.title}
+                href={card.anchor}
+                onClick={() => applyNeedRoute(card.searchTerm, card.repoTarget)}
+                className={`block rounded-[2rem] border p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${needFilter === card.searchTerm ? "border-fuchsia-300 bg-fuchsia-50" : "border-slate-200 bg-white"}`}
+              >
+                <p className="text-lg font-bold text-slate-900">{card.title}</p>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{card.description}</p>
+                <div className="mt-4 inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                  Ruta sugerida
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+        <section id="modulos" className="scroll-mt-24">
+          <Badge className="mb-3 rounded-full bg-sky-100 text-sky-800 hover:bg-sky-100">Estructura académica</Badge>
+          <h3 className="text-3xl font-black tracking-tight">Módulos articulados de aprendizaje</h3>
+          <p className="mt-2 max-w-3xl text-slate-600">Organización pedagógica pensada para un semestre con fuerte énfasis práctico.</p>
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            {modules.map((module) => (
+              <Card key={module.title} className="rounded-[2rem] border-0 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <CardHeader>
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100">
+                    <module.icon className="h-6 w-6 text-slate-700" />
+                  </div>
+                  <CardTitle className="text-xl">{module.title}</CardTitle>
+                  <CardDescription className="text-base leading-7 text-slate-600">{module.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {module.highlights.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => setActiveTopic(item)}
+                        className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 transition hover:bg-slate-200"
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section id="discapacidades" className="scroll-mt-24">
+          <Badge className="mb-3 rounded-full bg-emerald-100 text-emerald-800 hover:bg-emerald-100">Áreas de estudio</Badge>
+          <h3 className="text-3xl font-black tracking-tight">Mapa de discapacidades y apoyos educativos</h3>
+          <p className="mt-2 max-w-3xl text-slate-600">Cada bloque agrupa materiales y orientaciones para enriquecer el análisis de casos y la planificación de apoyos.</p>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {disabilitySections.map((item) => (
+              <Card key={item.title} className="overflow-hidden rounded-[2rem] border-0 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <button
+                  type="button"
+                  onClick={() => setActiveCard(item.title)}
+                  className="w-full text-left"
+                >
+                  <div className={`h-2 w-full bg-gradient-to-r ${item.color}`} />
+                  <CardHeader>
+                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100">
+                      <item.icon className="h-6 w-6 text-slate-700" />
+                    </div>
+                    <CardTitle>{item.title}</CardTitle>
+                    <CardDescription className="text-base leading-7 text-slate-600">{item.summary}</CardDescription>
+                  </CardHeader>
+                </button>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section id="videos" className="scroll-mt-24">
+          <Badge className="mb-3 rounded-full bg-rose-100 text-rose-800 hover:bg-rose-100">Videoteca curada</Badge>
+          <h3 className="text-3xl font-black tracking-tight">Videos de organizaciones y fundaciones</h3>
+          <p className="mt-2 max-w-4xl text-slate-600">Miniaturas clicables con acceso directo a YouTube desde fuentes institucionales o especializadas.</p>
+          <p className="mt-2 max-w-4xl text-sm text-slate-500">Sugerencia de uso pedagógico: emplea esta sección para introducir temas, activar debates o ampliar explicaciones antes de acudir al chatbot o a la bibliografía.</p>
+          <div className="mt-8 grid gap-6 xl:grid-cols-2">
+            {videos.map((video) => (
+              <Card key={video.url} className="overflow-hidden rounded-[2rem] border-0 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <a href={video.url} target="_blank" rel="noreferrer" className="block">
+                  <div className="group relative aspect-video w-full overflow-hidden bg-slate-100">
+                    <img src={video.thumbnail} alt={video.title} className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]" />
+                    <div className="absolute inset-0 bg-slate-900/20 transition group-hover:bg-slate-900/30" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 shadow-xl">
+                        <PlayCircle className="h-10 w-10 text-rose-600" />
+                      </div>
+                    </div>
+                  </div>
+                </a>
+                <CardContent className="p-6">
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    <Badge className="rounded-full">{video.organization}</Badge>
+                    <Badge variant="secondary" className="rounded-full">{video.topic}</Badge>
+                  </div>
+                  <h4 className="text-xl font-bold">{video.title}</h4>
+                  <p className="mt-2 leading-7 text-slate-600">{video.note}</p>
+                  <div className="mt-4">
+                    <a
+                      href={video.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-100"
+                    >
+                      <FileText className="h-4 w-4 text-slate-500" />
+                      Acceder al portal
+                      <ExternalLink className="h-4 w-4 text-slate-400" />
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section id="repositorio" className="scroll-mt-24">
+          <Badge className="mb-3 rounded-full bg-amber-100 text-amber-800">Repositorio académico</Badge>
+          <h3 className="text-3xl font-black">Biblioteca organizada</h3>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <div className="w-full text-sm text-slate-500">Filtra la biblioteca según la finalidad académica de uso.</div>
+            {["Todos", "Documentos base", "Bibliografía de consulta", "Guías técnico-pedagógicas"].map((f) => (
+              <button key={f} onClick={() => setRepoFilter(f)} className={`px-3 py-1 rounded-full text-sm ${repoFilter===f?"bg-amber-200":"bg-slate-100"}`}>
+                {f}
+              </button>
+            ))}
+          </div>
+          <div className="mt-8 grid gap-6 lg:grid-cols-3">
+            {repository.filter(g => repoFilter==="Todos" || g.category===repoFilter).map((group) => (
+              <Card key={group.category} className="rounded-[2rem]">
+                <CardHeader>
+                  <CardTitle>{group.category}</CardTitle>
+                  <p className="text-xs text-slate-500">Uso pedagógico: {group.category.includes("Guías") ? "Intervención y estrategias" : group.category.includes("Bibliografía") ? "Consulta temática especializada" : "Consulta y fundamentación"}</p>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-700">{group.category.includes("Guías") ? "Aplicación" : "Consulta"}</span>
+                    <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-700">{group.category.includes("Bibliografía") ? "Carpetas temáticas" : "Recursos curados"}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  {group.items.map((item) => (
+                    item.url !== "#" ? (
+                      <a
+                        key={item.name}
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between gap-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <FileText className="h-4 w-4 text-slate-500" />
+                          {item.name}
+                        </span>
+                        <ExternalLink className="h-4 w-4 shrink-0 text-slate-400" />
+                      </a>
+                    ) : (
+                      <div key={item.name} className="rounded-2xl border border-dashed border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                        <div className="inline-flex items-center gap-2 font-medium">
+                          <FileText className="h-4 w-4" />
+                          {item.name}
+                        </div>
+                        <p className="mt-1 text-xs leading-5 text-amber-700">Enlace pendiente. Requiere URL final del archivo o carpeta compartida.</p>
+                      </div>
+                    )
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section id="normativa" className="scroll-mt-24">
+          <Badge className="mb-3 rounded-full bg-indigo-100 text-indigo-800 hover:bg-indigo-100">Marco normativo</Badge>
+          <h3 className="text-3xl font-black tracking-tight">Normativa y enfoque de derechos</h3>
+          <p className="mt-2 max-w-4xl text-slate-600">Instrumentos fundamentales que sostienen el enfoque inclusivo, la accesibilidad y la garantía del derecho a la educación.</p>
+          <p className="mt-2 max-w-4xl text-sm text-slate-500">Sugerencia de uso pedagógico: útil para fundamentación teórica, revisión de política pública y sustento jurídico de decisiones pedagógicas.</p>
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            {regulations.map((law) => (
+              <Card key={law.title} className="rounded-[2rem] border-0 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <CardContent className="p-6">
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50">
+                    <ShieldCheck className="h-6 w-6 text-indigo-700" />
+                  </div>
+                  <h4 className="text-xl font-bold">{law.title}</h4>
+                  <p className="mt-3 leading-7 text-slate-600">{law.emphasis}</p>
+                  <div className="mt-4">
+                    <a
+                      href={law.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-100"
+                    >
+                      <FileText className="h-4 w-4 text-slate-500" />
+                      Acceder al portal
+                      <ExternalLink className="h-4 w-4 text-slate-400" />
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section id="organismos" className="scroll-mt-24">
+          <Badge className="mb-3 rounded-full bg-cyan-100 text-cyan-800 hover:bg-cyan-100">Ecosistema institucional</Badge>
+          <h3 className="text-3xl font-black tracking-tight">Organismos</h3>
+          <p className="mt-2 max-w-4xl text-slate-600">Accesos directos a instituciones gubernamentales y organismos vinculados con discapacidad, educación, salud y derechos.</p>
+          <p className="mt-2 max-w-4xl text-sm text-slate-500">Sugerencia de uso pedagógico: consulta esta sección cuando necesites ampliar información oficial, contrastar lineamientos o derivar búsquedas hacia portales institucionales.</p>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {agencies.map((agency) => (
+              <Card key={agency.name} className="rounded-[2rem] border-0 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <CardContent className="p-6">
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50">
+                    <Gavel className="h-6 w-6 text-cyan-700" />
+                  </div>
+                  <h4 className="text-xl font-bold">{agency.name}</h4>
+                  <p className="mt-3 leading-7 text-slate-600">{agency.description}</p>
+                  <div className="mt-4">
+                    <a
+                      href={agency.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-100"
+                    >
+                      <FileText className="h-4 w-4 text-slate-500" />
+                      Acceder al portal
+                      <ExternalLink className="h-4 w-4 text-slate-400" />
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section id="chatbot" className="scroll-mt-24">
+          <Card className="overflow-hidden rounded-[2rem] border-0 bg-gradient-to-br from-slate-900 via-violet-950 to-slate-900 text-white shadow-2xl">
+            <CardContent className="grid gap-6 p-8 lg:grid-cols-[1.1fr_.9fr] lg:p-10">
+              <div>
+                <Badge className="mb-4 rounded-full bg-white/10 text-white hover:bg-white/10">Asistencia inteligente</Badge>
+                <h3 className="text-3xl font-black tracking-tight lg:text-4xl">{SITE.chatbotName}</h3>
+                <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
+                  Bot de apoyo académico para resolver dudas, ampliar explicaciones, retroalimentar actividades y orientar consultas relacionadas con intervención oportuna, inclusión, discapacidades, detección temprana y adaptaciones educativas.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <div className="w-full text-sm text-slate-300">Ruta recomendada: explora primero los recursos del portal y luego utiliza el chatbot para ampliar, aclarar o profundizar.</div>
+                  <a
+                    href={SITE.chatbotUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center rounded-2xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-100"
+                  >
+                    Abrir chatbot en Poe
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </a>
+                  <a href="#repositorio">
+                    <Button variant="outline" className="rounded-2xl border-white/30 bg-transparent text-white hover:bg-white/10">Revisar insumos antes de consultar</Button>
+                  </a>
+                </div>
+              </div>
+              <div className="grid gap-4">
+                {[
+                  "Explica las diferencias entre discapacidad intelectual y retraso del desarrollo.",
+                  "Ayúdame a identificar signos de alerta en un caso de primera infancia.",
+                  "Sugiere una adaptación curricular para un niño con discapacidad visual.",
+                  "Resume las ideas principales sobre inclusión educativa y enfoque de derechos.",
+                ].map((prompt) => (
+                  <div key={prompt} className="rounded-3xl border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-100">{prompt}</div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+      </main>
+
+      {activeTopic && topicDetails[activeTopic] && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/60 px-4 py-8">
+          <div className="w-full max-w-2xl rounded-[2rem] bg-white p-6 shadow-2xl lg:p-8">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700">Información adicional</p>
+                <h3 className="mt-2 text-2xl font-black text-slate-900">{topicDetails[activeTopic].title}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveTopic(null)}
+                className="rounded-full bg-slate-100 p-2 text-slate-600 transition hover:bg-slate-200"
+                aria-label="Cerrar ventana"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <p className="mt-4 text-base leading-8 text-slate-600">{topicDetails[activeTopic].summary}</p>
+            <div className="mt-5 space-y-3">
+              {topicDetails[activeTopic].bullets.map((bullet) => (
+                <div key={bullet} className="rounded-2xl bg-slate-50 p-4 text-sm leading-7 text-slate-700">
+                  {bullet}
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex flex-wrap justify-end gap-3">
+              <a
+                href={SITE.chatbotUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+              >
+                Preguntar a {SITE.chatbotName}
+                <Bot className="ml-2 h-4 w-4" />
+              </a>
+              <Button className="rounded-2xl" onClick={() => setActiveTopic(null)}>Cerrar</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeCard && cardDetails[activeCard] && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/60 px-4 py-8">
+          <div className="w-full max-w-2xl rounded-[2rem] bg-white p-6 shadow-2xl lg:p-8">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-700">Consulta ampliada</p>
+                <h3 className="mt-2 text-2xl font-black text-slate-900">{cardDetails[activeCard].title}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveCard(null)}
+                className="rounded-full bg-slate-100 p-2 text-slate-600 transition hover:bg-slate-200"
+                aria-label="Cerrar ventana"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <p className="mt-4 text-base leading-8 text-slate-600">{cardDetails[activeCard].summary}</p>
+            <div className="mt-5 space-y-3">
+              {cardDetails[activeCard].bullets.map((bullet) => (
+                <div key={bullet} className="rounded-2xl bg-slate-50 p-4 text-sm leading-7 text-slate-700">
+                  {bullet}
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex flex-wrap justify-end gap-3">
+              <a
+                href={SITE.chatbotUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+              >
+                Consultar con {SITE.chatbotName}
+                <Bot className="ml-2 h-4 w-4" />
+              </a>
+              <Button className="rounded-2xl" onClick={() => setActiveCard(null)}>Cerrar</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <footer className="border-t border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 lg:grid-cols-[1.4fr_.6fr] lg:px-8">
+          <div>
+            <p className="text-lg font-bold">{SITE.title}</p>
+            <p className="mt-2 max-w-4xl leading-7 text-slate-600">
+              Recurso web educativo para apoyar el estudio autónomo, la consulta guiada y la comprensión integral de la intervención oportuna desde un enfoque de derechos e inclusión.
+            </p>
+          </div>
+          <div className="flex flex-col gap-2 lg:items-end">
+            <a href="#inicio"><Button variant="ghost" className="rounded-2xl">Volver al inicio</Button></a>
+            <a
+              href={SITE.chatbotUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+            >
+              Ir al chatbot
+              <Bot className="ml-2 h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </footer>
+
+      <a
+        href={SITE.chatbotUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50"
+        aria-label="Abrir chatbot"
+      >
+        <motion.div
+          initial={{ scale: 0.92, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.35, delay: 0.2 }}
+          className="group flex items-center gap-3 rounded-full bg-violet-600 px-5 py-4 text-white shadow-2xl"
+        >
+          <div className="relative flex h-11 w-11 items-center justify-center rounded-full bg-white/15">
+            <Bot className="h-5 w-5" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/20" />
+          </div>
+          <div className="hidden sm:block">
+            <p className="text-xs uppercase tracking-[0.18em] text-violet-100">Asistente disponible</p>
+            <p className="text-sm font-semibold">Pregúntale a {SITE.chatbotName}</p>
+          </div>
+        </motion.div>
+      </a>
+    </div>
+  );
+}
